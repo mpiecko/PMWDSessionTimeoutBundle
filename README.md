@@ -1,4 +1,4 @@
 PMWDSessionTimeoutBundle
 ========================
 
-A Symfony Bundle that invalidates the session when idle for some time
+A Symfony Bundle that invalidates an idle session.
