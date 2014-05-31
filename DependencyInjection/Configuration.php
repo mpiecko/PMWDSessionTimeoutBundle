@@ -14,8 +14,9 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('idle_time')
-                    ->defaultValue('300')
+                ->integerNode('idle_time')
+                    ->min(0)
+                    ->defaultValue('0')
                     ->info('After this number of seconds without a request, the session will be invalidated.')
                     ->example('300')
                 ->end()

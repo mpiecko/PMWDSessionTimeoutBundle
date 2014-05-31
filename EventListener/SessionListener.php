@@ -9,10 +9,17 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class SessionListener implements EventSubscriberInterface
 {
+    protected $idleTime;
+
+    public function __construct($idleTime)
+    {
+        $this->idleTime = (int) $idleTime;
+    }
 
     public function onKernelRequest(GetResponseEvent $event)
     {
-        if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
+        // Don't check the idle time if it is 0, or a sub request
+        if (!$this->idleTime || HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
             return;
         }
 
@@ -23,7 +30,7 @@ class SessionListener implements EventSubscriberInterface
             $session->start();
         }
 
-        if ((time() - $session->getMetadataBag()->getLastUsed()) > 15 * 60) {
+        if ((time() - $session->getMetadataBag()->getLastUsed()) > $this->idleTime) {
             $session->invalidate();
         }
 

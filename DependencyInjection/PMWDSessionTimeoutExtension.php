@@ -17,6 +17,8 @@ class PMWDSessionTimeoutExtension extends Extension
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
+
+        $container->setParameter('pmwd_session_timeout_listener.idle_time', $config['idle_time']);
     }
 
 }
